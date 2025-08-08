@@ -48,9 +48,7 @@ RUN /isaac-sim/python.sh -ma pip install \
   gdown \
   em \
   lark \
-  pandas \
-  opencv-python \
-  numpy
+  pandas 
 RUN /isaac-sim/python.sh -m pip install gdal==$(gdal-config --version)
 
 # isaac ros2_bridge config

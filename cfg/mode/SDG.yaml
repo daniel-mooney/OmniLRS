@@ -3,9 +3,10 @@ generation_settings:
   num_images: 1000
   prim_path: /Robots/husky/d455/RSD455/Camera_OmniVision_OV9782_Color
   camera_names: [camera_annotations]
-  camera_resolutions: [${as_tuple:640,480}]
+  camera_resolutions:
+    - ${as_tuple:640,480}
   data_dir: data
-  annotators_list: ["rgb", "pose"]
+  annotators_list: [["rgb", "pose"]]
   image_formats: [png]
   annot_formats: [json]
   element_per_folder: 1000

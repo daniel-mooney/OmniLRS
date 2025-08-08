@@ -43,7 +43,6 @@ class ConfigFactory:
         self.configs[config_name] = config
 
     def __call__(self, config_name: str, **kwargs) -> Any:
-        print(f"Creating config: {config_name} with args: {kwargs}")
         return self.configs[config_name](**kwargs)
 
     def getConfigs(self) -> list:

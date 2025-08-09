@@ -1,7 +1,7 @@
 name: SDG
 generation_settings:
   num_images: 1000
-  prim_path: /Robots/husky/d455/RSD455/Camera_OmniVision_OV9782_Color
+  prim_path: Camera
   # Might need to change this to an actual camera name
   camera_names: [camera_annotations]
   camera_resolutions:

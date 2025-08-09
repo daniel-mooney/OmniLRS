@@ -19,7 +19,7 @@ import omni
 from src.environments.lunaryard import LunaryardController
 
 from src.configurations.procedural_terrain_confs import TerrainManagerConf
-from src.configurations.auto_labeling_confs import CameraConf
+from src.configurations.auto_labeling_confs import CameraConf, AutoLabelingConf
 from src.configurations.rendering_confs import FlaresConf
 from src.configurations.environments import LunaryardConf
 from src.labeling.auto_label import AutonomousLabeling
@@ -42,6 +42,7 @@ class SDG_Lunaryard(LunaryardController):
         flares_settings: FlaresConf = None,
         terrain_manager: TerrainManagerConf = None,
         camera_settings: CameraConf = None,
+        generation_settings: AutoLabelingConf = None,
         **kwargs,
     ) -> None:
         super().__init__(
@@ -53,6 +54,7 @@ class SDG_Lunaryard(LunaryardController):
         )
         self.camera_settings = camera_settings
         self.terrain_settings = terrain_manager
+        self.generation_settings = generation_settings
         self.counter = 0
         self.rng = np.random.default_rng(seed=terrain_manager.moon_yard.crater_distribution.seed)
 
@@ -178,11 +180,14 @@ class SDG_Lunaryard(LunaryardController):
         self.randomizeCamera()
 
     def randomize(self) -> None:
-        self.randomizeSun()
-        self.randomizeEarth()
+        if self.generation_settings.randomize_lighting:
+            self.randomizeSun()
+
+        # self.randomizeEarth()
         self.randomizeCamera()
-        if self.counter % 100 == 0:
+
+        if self.counter % 100 == 0 and self.generation_settings.randomize_rocks:
             self.randomize_rocks()
-        if self.counter % 1000 == 0:
+        if self.counter % 1000 == 0 and self.generation_settings.randomize_terrain:
             self.switchTerrain(-1)
         self.counter += 1

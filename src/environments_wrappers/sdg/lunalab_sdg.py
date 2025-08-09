@@ -19,7 +19,7 @@ import omni
 from src.environments.lunalab import LunalabController
 
 from src.configurations.procedural_terrain_confs import TerrainManagerConf
-from src.configurations.auto_labeling_confs import CameraConf
+from src.configurations.auto_labeling_confs import CameraConf, AutoLabelingConf
 from src.configurations.rendering_confs import FlaresConf
 from src.configurations.environments import LunalabConf
 from src.labeling.auto_label import AutonomousLabeling
@@ -42,6 +42,7 @@ class SDG_Lunalab(LunalabController):
         flares_settings: FlaresConf = None,
         terrain_manager: TerrainManagerConf = None,
         camera_settings: CameraConf = None,
+        generation_settings: AutoLabelingConf = None,
         **kwargs,
     ) -> None:
         super().__init__(

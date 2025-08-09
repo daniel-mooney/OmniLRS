@@ -24,6 +24,9 @@ class AutoLabelingConf:
         element_per_folder (int): Number of elements that will be saved per folder.
                                   This is done to avoid having too many files in a single folder.
         save_intrisics (bool): Whether to save the intrinsics of the camera.
+        randomize_lighting (bool): Whether to randomize the lighting conditions for each image sample.
+        randomize_rocks (bool): Whether to randomly change the rocks in the scene after every 100 images.
+        randomize_terrain (bool): Whether to randomly change the local terrian (i.e. DEM) after every 1000 images.
     """
 
     num_images: int = dataclasses.field(default=int)
@@ -36,6 +39,9 @@ class AutoLabelingConf:
     annot_formats: list = dataclasses.field(default_factory=list)
     element_per_folder: int = dataclasses.field(default_factory=int)
     save_intrinsics: bool = dataclasses.field(default_factory=bool)
+    randomize_lighting: bool = dataclasses.field(default_factory=bool)
+    randomize_rocks: bool = dataclasses.field(default_factory=bool)
+    randomize_terrain: bool = dataclasses.field(default_factory=bool)
 
     def __post_init__(self):
         assert len(self.camera_names) > 0, "camera_names must have at least one element"

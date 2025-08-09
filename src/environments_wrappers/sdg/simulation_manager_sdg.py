@@ -28,6 +28,7 @@ class SyntheticDataGeneration_LabManagerFactory:
             **cfg["environment"],
             flares_settings=cfg["rendering"]["lens_flares"],
             camera_settings=cfg["mode"]["camera_settings"],
+            generation_settings=cfg["mode"]["generation_settings"],
         )
 
 

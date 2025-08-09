@@ -1,8 +1,8 @@
 name: SDG
 generation_settings:
   num_images: 1000
+  # Camera and camera_annotations are hard coded into the simulation...
   prim_path: Camera
-  # Might need to change this to an actual camera name
   camera_names: [camera_annotations]
   camera_resolutions:
     - ${as_tuple:640,480}
@@ -11,10 +11,11 @@ generation_settings:
   image_formats: [png]
   annot_formats: [json]
   element_per_folder: 1000
-  save_intrinsics: False
-  # add_noise_to_rgb: False
-  # sigma: 5.0
-  # seed: 42
+  save_intrinsics: True
+  randomize_lighting: False
+  randomize_rocks: False
+  randomize_terrain: False
+
 
 camera_settings:
   camera_path: Camera/camera_annotations

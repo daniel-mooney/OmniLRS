@@ -41,7 +41,7 @@ RUN apt-get update && apt-get install -y \
   && rm -rf /var/lib/apt/lists/*
 
 RUN /isaac-sim/python.sh -m pip install --upgrade pip
-RUN /isaac-sim/python.sh -ma pip install \
+RUN /isaac-sim/python.sh -m pip install \
   skyfield \
   zfpy \
   numba \

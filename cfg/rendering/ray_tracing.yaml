@@ -8,7 +8,7 @@ renderer:
   subdiv_refinement_level: 0
 
 lens_flares:
-  enable: False
+  enable: True
   scale: 0.5
   blades: 9
   aperture_rotation: 0.0
@@ -24,6 +24,6 @@ motion_blur:
   num_samples: 8
 
 chromatic_aberration:
-  enable: False
+  enable: True
   strength: [-0.055, -0.075, 0.015]
   model: ["Radial", "Radial", "Radial"]

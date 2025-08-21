@@ -7,7 +7,7 @@ generation_settings:
   camera_resolutions:
     - ${as_tuple:640,480}
   data_dir: data
-  annotators_list: [["rgb", "pose"]]
+  annotators_list: [["rgb", "pose", "bounding_box_2d"]]
   image_formats: [png]
   annot_formats: [json]
   element_per_folder: 1000

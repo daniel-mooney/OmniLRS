@@ -10,6 +10,7 @@ from src.environments_wrappers.sdg.lunaryard_sdg import SDG_Lunaryard
 from src.environments_wrappers.sdg.lunalab_sdg import SDG_Lunalab
 from src.configurations.auto_labeling_confs import AutoLabelingConf, CameraConf
 from src.labeling.auto_label import AutonomousLabeling
+from src.robots.robot import RobotManager
 
 from omni.isaac.core import World
 from typing import Union
@@ -51,6 +52,11 @@ class SDG_SimulationManager:
         self.world = World(stage_units_in_meters=1.0)
         self.physics_ctx = self.world.get_physics_context()
         self.physics_ctx.set_solver_type("PGS")
+
+        # Load any robots that should be in SDG mode
+        self.RobotManager = RobotManager(cfg["environment"]["robots_settings"])
+        self.RobotManager.preload_robot(self.world, SDG_mode=True)
+
         # Lab manager thread
         self.world.reset()
         self.LC = SDG_LMF(cfg)

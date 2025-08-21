@@ -305,19 +305,20 @@ terrain_manager:
   resolution: ${..lunaryard_settings.resolution}
 
 robots_settings:
-  uses_nucleus: True
+  uses_nucleus: False
   is_ROS2: True
   max_robots: 5
   robots_root: "/Robots"
   parameters:
     -
-      robot_name: ex1
+      robot_name: lander
       usd_path: assets/USD_Assets/robots/apollo_lunar_module.usdc
       pose:
         position: [25.0, 25.0, 0.0]
         orientation: [1, 0, 0, 0]
       domain_id: 1
-      target_links: []  
+      target_links: []
+      SDG_mode: True  
 
     -
       robot_name: husky
@@ -327,3 +328,4 @@ robots_settings:
         orientation: [1, 0, 0, 0]
       domain_id: 0
       target_links: ["front_left_wheel_link", "front_right_wheel_link", "rear_left_wheel_link", "rear_right_wheel_link"]
+      SDG_mode: False

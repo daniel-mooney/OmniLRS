@@ -428,6 +428,41 @@ class WriteInstanceData(BaseWriter):
         )
         self.counter += 1
 
+class WriteBoundingBox2dData(BaseWriter):
+    """
+    Write 2D bounding box data to a file.
+    """
+
+    def __init__(
+        self,
+        root_path=None,
+        name="bounding_box_2d",
+        element_per_folder=1000,
+        format="csv",
+        prefix="",
+        **kwargs
+    ):
+        super().__init__(
+            root_path,
+            name=name,
+            element_per_folder=element_per_folder,
+            prefix=prefix,
+            **kwargs
+        )
+        self.format = format
+        self.path_to_data = os.path.join(self.data_path, name + "." + format)
+
+        os.makedirs(self.data_path, exist_ok=True)
+    
+    def write(self, data: Dict[str, Any], **kwargs) -> None:
+        """Write bounding box data to a file
+
+        Args:
+            data (Dict[str, Any]): The bounding box data.
+        """
+        print(f"Bounding box data:\n{data}")
+        return
+
 
 class WriterFactory:
     """
@@ -474,3 +509,4 @@ writerFactory.registerWriter("ir", WriteIRData)
 writerFactory.registerWriter("depth", WriteDepthData)
 writerFactory.registerWriter("semantic_segmentation", WriteSemanticData)
 writerFactory.registerWriter("instance_segmentation", WriteInstanceData)
+writerFactory.registerWriter("bounding_box_2d", WriteBoundingBox2dData)

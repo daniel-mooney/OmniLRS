@@ -14,6 +14,7 @@ import os
 
 import omni.replicator.core as rep
 import omni.kit.actions.core
+import omni.usd
 from pxr import Usd, UsdGeom
 
 from src.configurations.auto_labeling_confs import AutoLabelingConf
@@ -86,6 +87,7 @@ class AutonomousLabeling:
             "semantic_segmentation": self.enableSemanticData,
             "depth": self.enableDepthData,
             "ir": self.enableIRData,
+            "bounding_box_2d": self.enableBoundingBox2dData,
         }
 
         self.stage = omni.usd.get_context().get_stage()
@@ -229,6 +231,25 @@ class AutonomousLabeling:
             instance_annotator,
         )
         instance_annotator.attach([self.render_products[camera_name]])
+
+    def enableBoundingBox2dData(self, camera_name: str) -> None:
+        """
+        Enable the collection of 2D bounding box data.
+        """
+        # TODO: Move the lander semantic labelling setup somewhere better
+        stage = omni.usd.get_context().get_stage()
+        lander_prim = stage.GetPrimAtPath("/Robots/lander")
+        rep.modify.semantics(
+            input_prims=lander_prim,
+            semantics=[("class", "lander")]
+        )
+
+        bbox2d_annotator = rep.AnnotatorRegistry.get_annotator(
+            "bounding_box_2d_tight",
+            init_params={"semanticTypes": ["class"]}
+        )
+        self.annotators[camera_name + "_bounding_box_2d"] = (camera_name, "bounding_box_2d", bbox2d_annotator)
+        bbox2d_annotator.attach([self.render_products[camera_name]])
 
     def record(self) -> None:
         """

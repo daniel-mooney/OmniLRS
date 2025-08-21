@@ -59,6 +59,7 @@ class RobotManager:
     def preload_robot(
         self,
         world: World,
+        SDG_mode: bool = False
     ) -> None:
         """
         Preload the robots in the scene.
@@ -67,6 +68,10 @@ class RobotManager:
         """
         if len(self.robot_parameters) > 0:
             for robot_parameter in self.robot_parameters:
+                # Do not spawn robot if it shouldn't be in SDG mode
+                if SDG_mode and not robot_parameter.SDG_mode:
+                    continue
+
                 self.add_robot(
                     robot_parameter.usd_path,
                     robot_parameter.robot_name,

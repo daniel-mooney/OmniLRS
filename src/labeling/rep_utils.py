@@ -453,16 +453,49 @@ class WriteBoundingBox2dData(BaseWriter):
         self.path_to_data = os.path.join(self.data_path, name + "." + format)
 
         os.makedirs(self.data_path, exist_ok=True)
-    
+
     def write(self, data: Dict[str, Any], **kwargs) -> None:
-        """Write bounding box data to a file
+        """Write bounding box data to a file.
 
         Args:
-            data (Dict[str, Any]): The bounding box data.
+            data (Dict[str, Any]): Annotator payload with keys "data" and "info".
         """
-        print(f"Bounding box data:\n{data}")
-        return
+        if self.format != "csv":
+            raise NotImplementedError(f"Format {self.format} not implemented")
 
+        # Extract the lander bbox (expects rows like [id, x_min, y_min, x_max, y_max, ...])
+        bbox_rows = data["data"]
+        id_to_labels = data["info"]["idToLabels"]
+
+        lander_bbox = next(
+            (
+                row for row in bbox_rows
+                if id_to_labels.get(str(row[0]), {}).get("class") == "lander"
+            ),
+            None,
+        )
+
+        if lander_bbox is not None and len(lander_bbox) >= 5:
+            objectness = 1
+            x_min, y_min, x_max, y_max = lander_bbox[1], lander_bbox[2], lander_bbox[3], lander_bbox[4]
+        else:
+            objectness = 0
+            x_min = y_min = x_max = y_max = 0
+
+        # Build a single-row DataFrame with proper columns; use writer counter as the index
+        cols = ["objectness", "x_min", "y_min", "x_max", "y_max"]
+        new_row = pd.DataFrame([[objectness, x_min, y_min, x_max, y_max]], columns=cols)
+        new_row.index = [self.counter]
+
+        # Append-or-create CSV, keeping the index (like the pose writer)
+        if os.path.exists(self.path_to_data):
+            old_df = pd.read_csv(self.path_to_data, index_col=0)
+            out = pd.concat([old_df, new_row])
+        else:
+            out = new_row
+
+        out.to_csv(self.path_to_data)  # keep index so counter persists
+        self.counter += 1
 
 class WriterFactory:
     """
